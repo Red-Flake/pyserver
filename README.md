@@ -2,6 +2,8 @@
 
 PyServer is a simple, multithreaded Python HTTP server that logs requests and provides a fancy, modern, and dark-themed directory listing. This server is perfect for quickly sharing files and directories over a network with minimal setup.
 
+<br>
+
 ## Features
 
 - HTTP GET and POST requests
@@ -10,10 +12,14 @@ PyServer is a simple, multithreaded Python HTTP server that logs requests and pr
 - Logs HTTP requests with colored output for better readability.
 - Easy to set up and run.
 
+<br>
+
 ## Requirements
 
 - Python 3.x
 - `colorlog` library for colored logging output.
+
+<br>
 
 ## Installation
 
@@ -30,6 +36,8 @@ or install the requirement from requirements.txt:
 pip install -r requirements.txt
 ```
 
+<br>
+
 ## Usage
 
 Run the server with the following command:
@@ -42,6 +50,8 @@ Example:
 ```bash
 python pyserver.py 8000
 ```
+
+<br>
 
 ## License
 
