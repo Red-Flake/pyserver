@@ -17,6 +17,7 @@ from socketserver import ThreadingMixIn
 import os
 import logging
 from colorlog import ColoredFormatter
+import cgi
 
 class FancyHTTPRequestHandler(SimpleHTTPRequestHandler):
     def _set_response(self, code=200, content_type='text/html'):
@@ -41,17 +42,17 @@ class FancyHTTPRequestHandler(SimpleHTTPRequestHandler):
             <style>
                 body {
                     font-family: Arial, sans-serif;
-                    background-color: #1e1e1e;
+                    background-color: #1a1a1a;
                     color: #e0e0e0;
                     margin: 0;
                     padding: 20px;
                 }
                 h2 {
-                    background-color: #b71c1c;
+                    background-color: #8b0000;
                     color: white;
                     padding: 10px;
                     border-radius: 5px;
-                    font-size: 1.2em;
+                    font-size: 0.9em;
                 }
                 ul {
                     list-style-type: none;
@@ -60,7 +61,7 @@ class FancyHTTPRequestHandler(SimpleHTTPRequestHandler):
                 li {
                     margin: 5px 0;
                     padding: 8px;
-                    background-color: #2a2a2a;
+                    background-color: #2b2b2b;
                     border: 1px solid #444;
                     border-radius: 5px;
                     transition: background-color 0.3s;
@@ -79,6 +80,72 @@ class FancyHTTPRequestHandler(SimpleHTTPRequestHandler):
                     background-color: #444;
                     margin: 20px 0;
                 }
+                .upload-form {
+                    margin-top: 20px;
+                    padding: 10px;
+                    background-color: #333;
+                    border: 1px solid #444;
+                    border-radius: 5px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                }
+                .upload-form input[type="file"] {
+                    margin-right: 10px;
+                    color: #e0e0e0;
+                    background-color: #2b2b2b;
+                    border: 1px solid #444;
+                    border-radius: 5px;
+                    padding: 5px;
+                    width: auto;
+                    cursor: pointer;
+                }
+                .upload-form input[type="file"]::-webkit-file-upload-button {
+                    background-color: #8b0000;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 10px;
+                    font-size: 0.9em;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                }
+                .upload-form input[type="file"]::-webkit-file-upload-button:hover {
+                    background-color: #a83232;
+                }
+                .upload-form input[type="submit"] {
+                    background-color: #8b0000;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 10px 20px;
+                    font-size: 0.9em;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                }
+                .upload-form input[type="submit"]:hover {
+                    background-color: #a83232;
+                }
+                #success-modal {
+                    display: none;
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #4CAF50;
+                    color: white;
+                    padding: 20px;
+                    border-radius: 5px;
+                    z-index: 1000;
+                }
+                #success-modal.fade-in {
+                    display: block;
+                    animation: fadeIn 0.5s;
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
             </style>
         ''')
         r.append('</head>')
@@ -92,7 +159,30 @@ class FancyHTTPRequestHandler(SimpleHTTPRequestHandler):
                 displayname = name + "/"
                 linkname = name + "/"
             r.append('<li><a href="%s">%s</a></li>' % (linkname, displayname))
-        r.append('</ul><hr></body></html>')
+        r.append('</ul>')
+        r.append('''
+            <hr>
+            <form enctype="multipart/form-data" method="post" class="upload-form">
+                <input name="file" type="file" />
+                <input type="submit" value="Upload"/>
+            </form>
+            <div id="success-modal">File uploaded successfully</div>
+            <script>
+                function showSuccessModal() {
+                    const modal = document.getElementById('success-modal');
+                    modal.classList.add('fade-in');
+                    setTimeout(() => { modal.classList.remove('fade-in'); }, 3000);
+                }
+
+                if (window.location.search.includes("uploaded=true")) {
+                    showSuccessModal();
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+
+                document.querySelector('input[type="file"]').classList.add('styled-file-input');
+            </script>
+        ''')
+        r.append('</body></html>')
         encoded = '\n'.join(r).encode('utf-8', 'surrogateescape')
         self.wfile.write(encoded)
 
@@ -105,12 +195,27 @@ class FancyHTTPRequestHandler(SimpleHTTPRequestHandler):
             super().do_GET()
 
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])  # <--- Gets the size of data
-        post_data = self.rfile.read(content_length)  # <--- Gets the data itself
-        logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
-                     str(self.path), str(self.headers), post_data.decode('utf-8'))
-        self._set_response()
-        self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
+        content_type, pdict = cgi.parse_header(self.headers['Content-Type'])
+        if content_type == 'multipart/form-data':
+            pdict['boundary'] = bytes(pdict['boundary'], "utf-8")
+            pdict['CONTENT-LENGTH'] = int(self.headers['Content-Length'])
+            form = cgi.FieldStorage(fp=self.rfile, headers=self.headers, environ={'REQUEST_METHOD': 'POST'}, keep_blank_values=True)
+            if 'file' in form:
+                file_item = form['file']
+                filename = os.path.basename(file_item.filename)
+                upload_path = os.path.join(self.translate_path(self.path), filename)
+                with open(upload_path, 'wb') as output_file:
+                    output_file.write(file_item.file.read())
+                self.send_response(303)
+                self.send_header('Location', self.path + '?uploaded=true')
+                self.end_headers()
+                logging.info("POST request,\nPath: %s\nHeaders:\n%s\nFile: %s\n",
+                             str(self.path), str(self.headers), filename)
+            else:
+                self.send_error(400, "File field missing in the form submission")
+        else:
+            self.send_error(400, "Invalid form submission")
+            return
 
 class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
     """Handle requests in a separate thread."""
