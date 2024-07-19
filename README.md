@@ -1,6 +1,6 @@
 # PyServer
 
-PyServer is a simple, multithreaded Python HTTP server that logs requests and provides a fancy, modern, and dark-themed directory listing. This server is perfect for quickly sharing files and directories over a network with minimal setup.
+PyServer is a simple, multithreaded Python HTTP GET & POST server that logs requests and provides a fancy, modern, and dark-themed directory listing. This server is perfect for quickly sharing files and directories over a network with minimal setup.
 
 <br>
 
