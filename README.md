@@ -56,10 +56,12 @@ python3 ./pyserver.py 8000
 ## Screenshots
 
 directory listing:
-![](screenshots/directory_listing.png)
+![](screenshots/directory_listing.png =250x150)
 
 request logging:
 ![](screenshots/request_logging.png)
+
+<br>
 
 ## License
 
