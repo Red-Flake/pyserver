@@ -63,6 +63,8 @@ Acknowledgments
 
 Inspired by the need for a simple, yet modern and stylish, Python HTTP server for quick file sharing and directory listing.
 
+<br>
+
 ## Credits
 
 This project was inspired by the work of Miel Donkers
