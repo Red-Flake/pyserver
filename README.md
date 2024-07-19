@@ -42,13 +42,13 @@ pip install -r requirements.txt
 
 Run the server with the following command:
 ```bash
-python pyserver.py [port]
+python3 ./pyserver.py [port]
 ```
 If no port is specified, the server will default to port 8080.
 
 Example:
 ```bash
-python pyserver.py 8000
+python3 ./pyserver.py 8000
 ```
 
 <br>
