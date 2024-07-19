@@ -56,7 +56,8 @@ python3 ./pyserver.py 8000
 ## Screenshots
 
 directory listing:
-<img src="screenshots/directory_listing.png" width="450" height="300">
+<br>
+<img src="screenshots/directory_listing.png" width="500" height="300">
 
 request logging:
 ![](screenshots/request_logging.png)
