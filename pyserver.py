@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
+
 """
 License: MIT License
-Copyright (c) 2023
+Copyright (c) 2023 Miel Donkers
 
 Very simple HTTP server in python for logging requests
 Usage::
     ./pyserver.py [<port>]
+
+This project was inspired by the work of Miel Donkers
+See: https://gist.github.com/mdonkers/63e115cc0c79b4f6b8b3a6b797e485c7
 """
+
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
 import os

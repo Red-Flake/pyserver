@@ -62,3 +62,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 Acknowledgments
 
 Inspired by the need for a simple, yet modern and stylish, Python HTTP server for quick file sharing and directory listing.
+
+## Credits
+
+This project was inspired by the work of Miel Donkers
+See: <a href="https://gist.github.com/mdonkers/63e115cc0c79b4f6b8b3a6b797e485c7">https://gist.github.com/mdonkers/63e115cc0c79b4f6b8b3a6b797e485c7</a>
