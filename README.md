@@ -53,6 +53,14 @@ python3 ./pyserver.py 8000
 
 <br>
 
+## Screenshots
+
+directory listing:
+![](screenshots/directory_listing.png)
+
+request logging:
+![](screenshots/request_logging.png)
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
