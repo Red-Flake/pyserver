@@ -4,16 +4,11 @@
 
     pname = "pyserver";
     version = "0.0.1";
+    pyproject = true;
 
-    # Pull source from a Git server. Optionally select a specific `ref` (e.g. branch),
-    # or `rev` revision hash.
-    src = super.fetchFromGitHub rec {
+    src = fetchPypi {
       inherit pname version;
-      name = pname;
-      rev = version;
-      owner = "Red-Flake";
-      repo = "pyserver";
-      sha256 = "sha256-WlZShvLkxl+gxL+iu7IQRQMgx59kZUgR6d6OGStfxS0=";
+      hash  = "sha256-fba6fca9ee179e239ec34ef8cbd56331c46ad89e428c9db9c475c794f5fdb673";
     };
 
     # If no `checkPhase` is specified, `python setup.py test` is executed
@@ -30,6 +25,14 @@
         super.python3Packages.colorlog
       ]})
     '';
+
+    build-system = with python3Packages; [
+      setuptools
+    ];
+
+    dependencies = with python3Packages; [
+      colorlog
+    ];
 
     # Meta information for the package
     meta = with lib; {
