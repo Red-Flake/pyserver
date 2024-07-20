@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/pyserver_Mag1cByt3s/__init__.py
+src/pyserver_Mag1cByt3s/pyserver.py
+src/pyserver_Mag1cByt3s/setup.py
+src/pyserver_Mag1cByt3s.egg-info/PKG-INFO
+src/pyserver_Mag1cByt3s.egg-info/SOURCES.txt
+src/pyserver_Mag1cByt3s.egg-info/dependency_links.txt
+src/pyserver_Mag1cByt3s.egg-info/top_level.txt

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyserver_Mag1cByt3s"
+version = "0.0.1"
+authors = [
+  { name="Pascal Peinecke", email="ppeinecke@protonmail.com" },
+]
+description = "PyServer is a simple, multithreaded Python HTTP GET & POST server that logs requests and provides a fancy, modern, and dark-themed directory listing"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/Red-Flake/pyserver"
+Issues = "https://github.com/Red-Flake/pyserver/issues"
