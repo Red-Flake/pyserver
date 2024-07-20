@@ -240,7 +240,7 @@ def setup_logging():
     handler.setFormatter(formatter)
     logging.basicConfig(level=logging.INFO, handlers=[handler])
 
-def run(server_class=ThreadingSimpleServer, handler_class=FancyHTTPRequestHandler, port=8080):
+def run(server_class=ThreadingSimpleServer, handler_class=FancyHTTPRequestHandler, port=80):
     setup_logging()
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
